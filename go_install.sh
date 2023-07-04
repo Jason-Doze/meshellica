@@ -28,6 +28,15 @@ else
   export PATH=$PATH:$(go env GOPATH)/bin
 fi
 
+# Install Cobra
+if ( which cobra > /dev/null )
+then 
+  echo -e "\n\033[1;32m==== Cobra installed ====\033[0m\n"
+else
+  echo -e "\n\033[1;33m==== Installing Cobra ====\033[0m\n"
+  sudo apt install cobra
+fi
+
 # Install Cobra CLI
 if (which cobra-cli > /dev/null)
 then 
@@ -37,22 +46,22 @@ else
   go install github.com/spf13/cobra-cli@latest
 fi
 
-# Create Module directory
-if [ -d /home/jasondoze/meshellica/gomod ]
-then
-  echo -e "\n\033[1;32m==== Gomod directory present ====\033[0m\n"
-else
-  echo -e "\n\033[1;33m==== Creating Gomod directory ====\033[0m\n"
-  mkdir gomod
-fi
+# # Create Module directory
+# if [ -d /home/jasondoze/meshellica/gomod ]
+# then
+#   echo -e "\n\033[1;32m==== Gomod directory present ====\033[0m\n"
+# else
+#   echo -e "\n\033[1;33m==== Creating Gomod directory ====\033[0m\n"
+#   mkdir gomod
+# fi
 
 # Initialiaze Go module
-if [ -f /home/jasondoze/meshellica/gomod/go.mod ] 
+if [ -f /home/jasondoze/meshellica/go.mod ] 
 then
   echo -e "\n\033[1;32m==== Go module initialized ====\033[0m\n"
 else
   echo -e "\n\033[1;33m==== Initializing Go module ====\033[0m\n"
-  pushd gomod
+  # pushd gomod
   go mod init modulos
 fi
 
@@ -62,7 +71,7 @@ then
   echo -e "\n\033[1;32m==== Cobra initialized ====\033[0m\n"
 else
   echo -e "\n\033[1;33m==== Initializing Cobra ====\033[0m\n"
-  cobra-cli init
+  cobra init
 fi
 
 go run main.go
