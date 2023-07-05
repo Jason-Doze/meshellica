@@ -76,7 +76,8 @@ echo -e "\n\033[1;32m==== Transferring files to VM ====\033[0m\n"
 rsync -av -e "ssh -o StrictHostKeyChecking=no -i ./id_ed25519" --delete --exclude={'.git','.gitignore','id_ed25519','id_ed25519.pub','cloud-init.yaml','README.md','vm_deploy.sh','vm_destroy.sh','commands.txt'} $(pwd) $USER@$(multipass info nameless | grep IPv4 | awk '{ print $2 }'):/home/$USER
 
 echo -e "\n\033[1;32m==== Execute install scripts on VM ====\033[0m\n"
-ssh -o StrictHostKeyChecking=no -i ./id_ed25519 $USER@$(multipass info nameless | grep IPv4 | awk '{ print $2 }') 'cd meshellica && bash go_install.sh'
+ssh -o StrictHostKeyChecking=no -i ./id_ed25519 $USER@$(multipass info nameless | grep IPv4 | awk '{ print $2 }') 'cd meshellica/go && bash go_install.sh'
+ssh -o StrictHostKeyChecking=no -i ./id_ed25519 $USER@$(multipass info nameless | grep IPv4 | awk '{ print $2 }') 'cd meshellica/python && bash python_install.sh'
 
 echo -e "\n\033[1;32m==== SSH into VM ====\033[0m\n"
 ssh -o StrictHostKeyChecking=no -i ./id_ed25519 $USER@$(multipass info nameless | grep IPv4 | awk '{ print $2 }') 
