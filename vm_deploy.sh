@@ -75,23 +75,21 @@ fi
 echo -e "\n\033[1;32m==== Transferring files to VM ====\033[0m\n"
 rsync -av -e "ssh -o StrictHostKeyChecking=no -i ./id_ed25519" --delete --exclude={'.git','.gitignore','id_ed25519','id_ed25519.pub','cloud-init.yaml','README.md','vm_deploy.sh','vm_destroy.sh','commands.txt'} $(pwd) $USER@$(multipass info nameless | grep IPv4 | awk '{ print $2 }'):/home/$USER
 
-# echo -e "\n\033[1;32m==== Execute install scripts on VM ====\033[0m\n"
-# ssh -o StrictHostKeyChecking=no -i ./id_ed25519 $USER@$(multipass info nameless | grep IPv4 | awk '{ print $2 }') 'cd meshellica/go && bash go_install.sh'
-# ssh -o StrictHostKeyChecking=no -i ./id_ed25519 $USER@$(multipass info nameless | grep IPv4 | awk '{ print $2 }') 'cd meshellica/python && bash python_install.sh'
-
-if [ "$1" == "go" ]
-then
-  echo -e "\n\033[1;32m==== Running go_install.sh ====\033[0m\n"
-  ssh -o StrictHostKeyChecking=no -i ./id_ed25519 $USER@$(multipass info nameless | grep IPv4 | awk '{ print $2 }') 'cd meshellica/go && bash go_install.sh'
-elif [ "$1" == "python" ]
-then
-  echo -e "\n\033[1;32m==== Running python_install.sh ====\033[0m\n"
-  ssh -o StrictHostKeyChecking=no -i ./id_ed25519 $USER@$(multipass info nameless | grep IPv4 | awk '{ print $2 }') 'cd meshellica/python && bash python_install.sh'
-else
-  echo -e "\n\033[1;33m==== Invalid argument. Specify either 'go' or 'python' ====\033[0m\n"
-  exit 1
-fi
-
+# Pass arguments to execute scripts
+PROGRAM=$1
+case $PROGRAM in
+  "go")
+    echo -e "\n\033[1;32m==== Running $PROGRAM scripts ====\033[0m\n"
+    ssh -o StrictHostKeyChecking=no -i ./id_ed25519 $USER@$(multipass info nameless | grep IPv4 | awk '{ print $2 }') "cd meshellica/go && bash install_$PROGRAM.sh"
+    ;;
+  "python")
+    echo -e "\n\033[1;32m==== Running $PROGRAM scripts ====\033[0m\n"
+    ssh -o StrictHostKeyChecking=no -i ./id_ed25519 $USER@$(multipass info nameless | grep IPv4 | awk '{ print $2 }') "cd meshellica/$PROGRAM && bash install_$PROGRAM.sh"
+    ;;
+  *)
+    echo -e "\n\033[1;33m==== Invalid argument. Specify either 'go' or 'python' ====\033[0m\n"
+    exit 1
+esac
 
 echo -e "\n\033[1;32m==== SSH into VM ====\033[0m\n"
 ssh -o StrictHostKeyChecking=no -i ./id_ed25519 $USER@$(multipass info nameless | grep IPv4 | awk '{ print $2 }') 

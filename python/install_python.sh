@@ -1,13 +1,7 @@
 #!/bin/bash
 
 # Update Apt
-if ( apt-cache show python3 &> /dev/null )
-then
-  echo -e "\n\033[1;32m==== Go in cache ====\033[0m\n"
-else
-  echo -e "\n\033[1;33m==== Updating Apt ====\033[0m\n"
-  sudo apt update 
-fi
+sudo apt update
 
 # Install Python3
 if ( which python3 > /dev/null )
@@ -54,4 +48,11 @@ else
 fi
 
 # Activate virtual environment
-source py3env/bin/activate
+if ( grep -q "source /home/jasondoze/meshellica/python/py3env/bin/activate" /home/jasondoze/.profile )
+then
+  echo -e "\n\033[1;33m==== Python virtual environment activation in profile ====\033[0m\n"
+else
+  echo -e "\n\033[1;32m==== Adding Python virtual environment activation to profile ====\033[0m\n"
+  echo "source /home/jasondoze/meshellica/python/py3env/bin/activate" >> /home/jasondoze/.profile
+fi
+
