@@ -80,7 +80,7 @@ PROGRAM=$1
 case $PROGRAM in
   "go")
     echo -e "\n\033[1;32m==== Running $PROGRAM scripts ====\033[0m\n"
-    ssh -o StrictHostKeyChecking=no -i ./id_ed25519 $USER@$(multipass info nameless | grep IPv4 | awk '{ print $2 }') "cd meshellica/go && bash install_$PROGRAM.sh"
+    ssh -o StrictHostKeyChecking=no -i ./id_ed25519 $USER@$(multipass info nameless | grep IPv4 | awk '{ print $2 }') "cd meshellica/$PROGRAM && bash install_$PROGRAM.sh"
     ;;
   "python")
     echo -e "\n\033[1;32m==== Running $PROGRAM scripts ====\033[0m\n"
